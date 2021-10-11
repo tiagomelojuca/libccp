@@ -39,7 +39,7 @@ install(FILES "${SRC_PUNC}/punc.h" DESTINATION "inc")
 # install(TARGETS ccp test_minneg test_punc DESTINATION "test")
 add_custom_command(TARGET ccp POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy
-                   "${CMAKE_INSTALL_PREFIX}/lib/libccp.dll"
+                   "${CMAKE_BINARY_DIR}/libccp.dll"
                    "${CMAKE_BINARY_DIR}/test/libccp.dll")
 
 # -----------------------------------------------------------------------------
