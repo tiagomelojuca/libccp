@@ -12,7 +12,7 @@ set(INC_DIR                 "${SRC_MINNEG}"
                             "${SRC_PUNC}")
 
 set(OUT_DIR                 "exeobj_cmake")
-set(CMAKE_INSTALL_PREFIX    "${CMAKE_BINARY_DIR}/${OUT_DIR}")
+set(CMAKE_INSTALL_PREFIX    "${CMAKE_BINARY_DIR}")
 
 # -----------------------------------------------------------------------------
 
@@ -31,9 +31,9 @@ add_subdirectory(test)
 
 # -----------------------------------------------------------------------------
 
-install(TARGETS ccp DESTINATION "lib")
-install(FILES "${SRC_MINNEG}/minneg.h" DESTINATION "inc")
-install(FILES "${SRC_PUNC}/punc.h" DESTINATION "inc")
+install(TARGETS ccp DESTINATION "${OUT_DIR}/lib")
+install(FILES "${SRC_MINNEG}/minneg.h" DESTINATION "${OUT_DIR}/inc")
+install(FILES "${SRC_PUNC}/punc.h" DESTINATION "${OUT_DIR}/inc")
 
 # deprecated
 # install(TARGETS ccp test_minneg test_punc DESTINATION "test")
