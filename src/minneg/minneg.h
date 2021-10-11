@@ -120,24 +120,6 @@ Criteria _APICCP create_criteria_data(Number fyk,
                                       Number reduction_factor_concrete,
                                       Number reduction_factor_mild_steel);
 
-int calc_bars_amount(Number as, Number as_unit, Number tol);
-
-bool is_in_border_x(Column column);
-bool is_in_border_y(Column column);
-
-Number calc_nbr_offset(Column column);
-Number calc_reduced_offset_x(Column column);
-Number calc_reduced_offset_y(Column column);
-Number calc_distreg_x(Column column);
-Number calc_distreg_y(Column column);
-
-Number calc_nbr_length_x(Column column);
-Number calc_nbr_length_y(Column column);
-Number calc_var_length_x(Column column);
-Number calc_var_length_y(Column column);
-Number calc_bars_length_x(Column column);
-Number calc_bars_length_y(Column column);
-
 Reinforcement _APICCP create_reinforcement(Column column,
                                            Number as_x, Number as_y,
                                            Number as_unit_x, Number as_unit_y,

@@ -20,6 +20,9 @@ add_library(
     ccp
     SHARED
     "${SRC_MINNEG}/minneg.c"
+    "${SRC_MINNEG}/distreg.c"
+    "${SRC_MINNEG}/msbars.c"
+    "${SRC_MINNEG}/utils.c"
     "${SRC_PUNC}/punc.c"
 )
 
