@@ -27,23 +27,7 @@ target_compile_definitions(ccp PRIVATE -DBUILD_DLL)
 
 # -----------------------------------------------------------------------------
 
-add_executable(
-    test_minneg
-    "${TEST_DIR}/test_minneg.c"
-)
-
-target_include_directories(test_minneg PRIVATE "${INC_DIR}")
-target_link_libraries(test_minneg PRIVATE ccp)
-
-# -----------------------------------------------------------------------------
-
-add_executable(
-    test_punc
-    "${TEST_DIR}/test_punc.c"
-)
-
-target_include_directories(test_punc PRIVATE "${INC_DIR}")
-target_link_libraries(test_punc PRIVATE ccp)
+add_subdirectory(test)
 
 # -----------------------------------------------------------------------------
 
@@ -51,6 +35,11 @@ install(TARGETS ccp DESTINATION "lib")
 install(FILES "${SRC_MINNEG}/minneg.h" DESTINATION "inc")
 install(FILES "${SRC_PUNC}/punc.h" DESTINATION "inc")
 
-install(TARGETS ccp test_minneg test_punc DESTINATION "test")
+# deprecated
+# install(TARGETS ccp test_minneg test_punc DESTINATION "test")
+add_custom_command(TARGET ccp POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy
+                   "${CMAKE_INSTALL_PREFIX}/lib/libccp.dll"
+                   "${CMAKE_BINARY_DIR}/test/libccp.dll")
 
 # -----------------------------------------------------------------------------
