@@ -32,8 +32,8 @@ add_executable(
     "${TEST_DIR}/test_minneg.c"
 )
 
-target_include_directories(test_minneg PUBLIC "${INC_DIR}")
-target_link_libraries(test_minneg PUBLIC ccp)
+target_include_directories(test_minneg PRIVATE "${INC_DIR}")
+target_link_libraries(test_minneg PRIVATE ccp)
 
 # -----------------------------------------------------------------------------
 
@@ -42,8 +42,8 @@ add_executable(
     "${TEST_DIR}/test_punc.c"
 )
 
-target_include_directories(test_punc PUBLIC "${INC_DIR}")
-target_link_libraries(test_punc PUBLIC ccp)
+target_include_directories(test_punc PRIVATE "${INC_DIR}")
+target_link_libraries(test_punc PRIVATE ccp)
 
 # -----------------------------------------------------------------------------
 
