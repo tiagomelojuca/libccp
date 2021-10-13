@@ -132,6 +132,9 @@ Detail _APICCP create_detail(Column column, Criteria criteria,
                              Number weight_unit_x, Number weight_unit_y,
                              bool should_adopt_higher_as, Number tolerance);
 
+int _APICCP save_detail_to_file(const char* filepath, Detail d);
+Detail _APICCP load_detail_from_file(const char* filepath);
+
 // ----------------------------------------------------------------------------
 
 #ifdef __cplusplus

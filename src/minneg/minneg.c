@@ -1,5 +1,6 @@
 #include "minneg.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "distreg.h"
@@ -113,6 +114,51 @@ Detail create_detail(Column column, Criteria criteria,
                                             weight_unit_x, weight_unit_y,
                                             should_adopt_higher_as, tolerance);
 
+    return d;
+}
+
+// ----------------------------------------------------------------------------
+
+int save_detail_to_file(const char* filepath, Detail d)
+{
+    FILE* f = fopen(filepath, "wb");
+
+    if (f == NULL) {
+        return 1;
+    }
+
+    fwrite(d->column, sizeof(TColumn), 1, f);
+    fwrite(d->criteria, sizeof(TCriteria), 1, f);
+    fwrite(&d->as_x, sizeof(Number), 1, f);
+    fwrite(&d->as_y, sizeof(Number), 1, f);
+    fwrite(d->reinforcement, sizeof(TReinforcement), 1, f);
+
+    fclose(f);
+    return 0;
+}
+
+// ----------------------------------------------------------------------------
+
+Detail load_detail_from_file(const char* filepath)
+{
+    FILE* f = fopen(filepath, "rb");
+
+    if (f == NULL) {
+        return NULL;
+    }
+
+    Detail d = malloc(sizeof(TDetail));
+    d->column = malloc(sizeof(TColumn));
+    d->criteria = malloc(sizeof(TCriteria));
+    d->reinforcement = malloc(sizeof(TReinforcement));
+
+    fread(d->column, sizeof(TColumn), 1, f);
+    fread(d->criteria, sizeof(TCriteria), 1, f);
+    fread(&d->as_x, sizeof(Number), 1, f);
+    fread(&d->as_y, sizeof(Number), 1, f);
+    fread(d->reinforcement, sizeof(TReinforcement), 1, f);
+
+    fclose(f);
     return d;
 }
 

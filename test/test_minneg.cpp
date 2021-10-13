@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
 
+#include <iostream>
+#include <filesystem>
+
 #include <minneg.h>
 
 // ----------------------------------------------------------------------------
@@ -35,6 +38,8 @@ const Number wg_y = 1.578;
 
 const bool should_adopt_higher_as = false;
 const Number tolerance = 0.02;
+
+static constexpr const char* rel_fp = "build/test/test-det.bin";
 
 // ----------------------------------------------------------------------------
 
@@ -114,6 +119,68 @@ TEST(test_minneg, should_be_able_to_create_new_detail)
     
     Detail det = create_detail(column, criteria, as_x, as_y, wg_x, wg_y,
                                should_adopt_higher_as, tolerance);
+
+    EXPECT_FLOAT_EQ(det->as_x, 14.0175);
+    EXPECT_FLOAT_EQ(det->as_y, 12.7837);
+    EXPECT_EQ(det->reinforcement->bars_amount_x, 7);
+    EXPECT_EQ(det->reinforcement->bars_amount_y, 7);
+    EXPECT_FLOAT_EQ(det->reinforcement->s_x, 22.5000);
+    EXPECT_FLOAT_EQ(det->reinforcement->s_y, 20.4170);
+    EXPECT_FLOAT_EQ(det->reinforcement->bars_length_x, 163.1670);
+    EXPECT_FLOAT_EQ(det->reinforcement->bars_length_y, 171.1670);
+    EXPECT_FLOAT_EQ(det->reinforcement->bars_weight_x, 18.0234);
+    EXPECT_FLOAT_EQ(det->reinforcement->bars_weight_y, 18.9071);
+}
+
+// ----------------------------------------------------------------------------
+
+TEST(test_minneg, should_be_able_to_save_detail_to_file)
+{
+    Column column = create_column(slab_height, dim_x, dim_y,
+                                  lm_x, lm_y, li_x, li_y,
+                                  cantilever_x_pos, cantilever_x_val,
+                                  cantilever_y_pos, cantilever_y_val,
+                                  border_position);
+
+    Criteria criteria = create_criteria_data(fyk,
+                                             increase_factor_loads,
+                                             reduction_factor_concrete,
+                                             reduction_factor_mild_steel);
+    
+    Detail det = create_detail(column, criteria, as_x, as_y, wg_x, wg_y,
+                               should_adopt_higher_as, tolerance);
+
+    std::string path = std::filesystem::current_path().append(rel_fp).string();
+    save_detail_to_file(path.c_str(), det);
+}
+
+// ----------------------------------------------------------------------------
+
+TEST(test_minneg, should_be_able_to_load_detail_from_file)
+{
+    std::string path = std::filesystem::current_path().append(rel_fp).string();
+    Detail det = load_detail_from_file(path.c_str());
+
+    EXPECT_FLOAT_EQ(det->column->aslab.height, slab_height);
+    EXPECT_FLOAT_EQ(det->column->geom.dim_x, dim_x);
+    EXPECT_FLOAT_EQ(det->column->geom.dim_y, dim_y);
+    EXPECT_FLOAT_EQ(det->column->lm.x, lm_x);
+    EXPECT_FLOAT_EQ(det->column->lm.y, lm_y);
+    EXPECT_FLOAT_EQ(det->column->li.x, li_x);
+    EXPECT_FLOAT_EQ(det->column->li.y, li_y);
+    EXPECT_EQ(det->column->cantilever_x.pos, cantilever_x_pos);
+    EXPECT_FLOAT_EQ(det->column->cantilever_x.value, cantilever_x_val);
+    EXPECT_EQ(det->column->cantilever_y.pos, cantilever_y_pos);
+    EXPECT_FLOAT_EQ(det->column->cantilever_y.value, cantilever_y_val);
+    EXPECT_EQ(det->column->border_pos, border_position);
+
+    EXPECT_FLOAT_EQ(det->criteria->fyk, fyk);
+    EXPECT_FLOAT_EQ(det->criteria->increase_factor_loads,
+                    increase_factor_loads);
+    EXPECT_FLOAT_EQ(det->criteria->reduction_factor_concrete,
+                    reduction_factor_concrete);
+    EXPECT_FLOAT_EQ(det->criteria->reduction_factor_mild_steel,
+                    reduction_factor_mild_steel);
 
     EXPECT_FLOAT_EQ(det->as_x, 14.0175);
     EXPECT_FLOAT_EQ(det->as_y, 12.7837);
